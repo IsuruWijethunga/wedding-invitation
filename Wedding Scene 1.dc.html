@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;padding:0;height:100%;background:#2B151D;overflow:hidden}
+a{color:#D6C09C;text-decoration:none}a:hover{color:#F7F1E8}
+@keyframes introOut{to{opacity:0}}
+@keyframes introIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes riseIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes fadeOut{from{opacity:1}to{opacity:0}}
+@keyframes liftOut{from{opacity:1;transform:none}to{opacity:0;transform:translateY(-22px)}}
+@keyframes lineGrow{from{opacity:0;transform:scaleX(0)}to{opacity:.55;transform:scaleX(1)}}
+@keyframes drift{0%{opacity:0;transform:translate3d(0,0,0)}12%{opacity:.7}88%{opacity:.5}100%{opacity:0;transform:translate3d(18px,-120px,0)}}
+@keyframes bob{0%,100%{transform:translateY(0);opacity:.55}50%{transform:translateY(5px);opacity:.85}}
+@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.035)}}
+@keyframes flicker{0%,100%{opacity:.5;transform:scale(1)}28%{opacity:.95;transform:scale(1.15)}52%{opacity:.62}76%{opacity:.9}}
+@keyframes drawLine{from{transform:scaleY(0);opacity:.4}to{transform:scaleY(1);opacity:1}}
+@keyframes pushIn{from{transform:scale(1)}to{transform:scale(1.62)}}
+@keyframes pullBack{from{transform:scale(1.62)}to{transform:scale(1)}}
+@keyframes glow{0%,100%{opacity:.22}50%{opacity:.4}}
+</style>
+</helmet>
+<div style="position:fixed;inset:0;width:100vw;height:100dvh;background:#2B151D;overflow:hidden;font-family:'Cormorant Garamond',Georgia,serif;color:#F7F1E8;-webkit-font-smoothing:antialiased">
+
+  <div style="position:absolute;inset:0;overflow:hidden">
+    <video ref="{{ v1 }}" playsinline="true" muted="{{ muted }}" preload="auto" onEnded="{{ onV1End }}" onTimeUpdate="{{ onV1Time }}" src="uploads/scene1.mp4" style="position:absolute;inset:0;width:100%;height:100%;object-fit:{{ fit }};object-position:center;display:block;transform-origin:50% 50%;will-change:transform;animation:{{ aV1 }}"></video>
+  </div>
+
+  <div style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(78% 66% at 50% 44%,#F9F4EC 0%,#F2E8D8 46%,#E7D8BF 78%,#DFCCAE 100%);animation:{{ aBg }}"></div>
+
+  <sc-if value="{{ ivory }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;background:#FBF7F0"></div>
+  </sc-if>
+
+  <div style="position:absolute;inset:0;overflow:hidden">
+    <video ref="{{ v2 }}" playsinline="true" muted="{{ muted }}" onEnded="{{ onV2End }}" onTimeUpdate="{{ onV2Time }}" preload="auto" src="uploads/scene2.mp4" style="position:absolute;inset:0;width:100%;height:100%;object-fit:{{ fitV2 }};object-position:center;display:block;transform-origin:50% 50%;transition:transform 2200ms cubic-bezier(.3,0,.2,1);transform:{{ vPan }};animation:{{ aV2 }}"></video>
+  </div>
+
+  <sc-if value="{{ needsTap }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ resume }}" style="position:absolute;left:50%;bottom:14%;transform:translateX(-50%);display:flex;align-items:center;gap:10px;padding:12px 20px;cursor:pointer;animation:fadeIn 900ms ease both">
+      <div style="width:6px;height:6px;border-radius:50%;background:#7C5A2E"></div>
+      <div style="font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:10px;letter-spacing:.4em;text-transform:uppercase;color:#4A3324">Tap to continue</div>
+    </div>
+  </sc-if>
+
+  <div style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 90% at 50% 45%,rgba(43,21,29,0) 42%,rgba(43,21,29,.30) 78%,rgba(43,21,29,.62) 100%)"></div>
+  <div style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(34% 40% at 50% 52%,rgba(247,241,232,.42),rgba(247,241,232,0) 72%);animation:glow 9s ease-in-out infinite"></div>
+
+  <div style="position:absolute;inset:0;pointer-events:none;overflow:hidden">
+    <div style="position:absolute;left:8%;top:72%;width:3px;height:3px;border-radius:50%;background:#D6C09C;box-shadow:0 0 8px rgba(214,192,156,.9);animation:drift 16s linear infinite"></div>
+    <div style="position:absolute;left:17%;top:88%;width:2px;height:2px;border-radius:50%;background:#C8AA79;box-shadow:0 0 6px rgba(200,170,121,.8);animation:drift 21s linear -4s infinite"></div>
+    <div style="position:absolute;left:26%;top:64%;width:2px;height:2px;border-radius:50%;background:#D6C09C;box-shadow:0 0 7px rgba(214,192,156,.7);animation:drift 19s linear -9s infinite"></div>
+    <div style="position:absolute;left:35%;top:92%;width:3px;height:3px;border-radius:50%;background:#C8AA79;box-shadow:0 0 9px rgba(200,170,121,.75);animation:drift 24s linear -2s infinite"></div>
+    <div style="position:absolute;left:44%;top:78%;width:2px;height:2px;border-radius:50%;background:#D6C09C;box-shadow:0 0 6px rgba(214,192,156,.7);animation:drift 18s linear -12s infinite"></div>
+    <div style="position:absolute;left:53%;top:95%;width:2px;height:2px;border-radius:50%;background:#C8AA79;box-shadow:0 0 7px rgba(200,170,121,.7);animation:drift 22s linear -6s infinite"></div>
+    <div style="position:absolute;left:62%;top:70%;width:3px;height:3px;border-radius:50%;background:#D6C09C;box-shadow:0 0 8px rgba(214,192,156,.8);animation:drift 17s linear -14s infinite"></div>
+    <div style="position:absolute;left:71%;top:86%;width:2px;height:2px;border-radius:50%;background:#C8AA79;box-shadow:0 0 6px rgba(200,170,121,.7);animation:drift 25s linear -3s infinite"></div>
+    <div style="position:absolute;left:80%;top:66%;width:2px;height:2px;border-radius:50%;background:#D6C09C;box-shadow:0 0 7px rgba(214,192,156,.7);animation:drift 20s linear -17s infinite"></div>
+    <div style="position:absolute;left:90%;top:90%;width:3px;height:3px;border-radius:50%;background:#C8AA79;box-shadow:0 0 9px rgba(200,170,121,.75);animation:drift 23s linear -8s infinite"></div>
+    <div style="position:absolute;left:12%;top:52%;width:2px;height:2px;border-radius:50%;background:#D6C09C;box-shadow:0 0 6px rgba(214,192,156,.6);animation:drift 27s linear -20s infinite"></div>
+    <div style="position:absolute;left:86%;top:48%;width:2px;height:2px;border-radius:50%;background:#D6C09C;box-shadow:0 0 6px rgba(214,192,156,.6);animation:drift 26s linear -11s infinite"></div>
+  </div>
+
+  <sc-if value="{{ mountText }}" hint-placeholder-val="{{ true }}">
+  <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(34vw,520px);min-width:280px;max-width:86vw;text-align:center;pointer-events:none">
+    <div style="font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:clamp(10px,.8vw,12px);letter-spacing:.42em;text-transform:uppercase;color:#7C5A2E;animation:{{ aEyebrow }}">Together with our beloved families</div>
+    <div style="margin-top:clamp(14px,2.2vh,26px);animation:{{ aNames }}">
+      <div style="font-weight:300;font-size:clamp(38px,5.6vw,92px);line-height:.98;letter-spacing:.01em;color:#3A1F27;text-shadow:0 1px 18px rgba(247,241,232,.55)">Kavindu</div>
+      <div style="font-style:italic;font-weight:300;font-size:clamp(17px,1.9vw,30px);line-height:1;color:#8A6A34;margin:clamp(2px,.6vh,8px) 0">&amp;</div>
+      <div style="font-weight:300;font-size:clamp(38px,5.6vw,92px);line-height:.98;letter-spacing:.01em;color:#3A1F27;text-shadow:0 1px 18px rgba(247,241,232,.55)">Sanduni</div>
+    </div>
+    <div style="margin:clamp(16px,2.6vh,30px) auto 0;width:44%;height:1px;background:linear-gradient(90deg,rgba(124,90,46,0),rgba(124,90,46,.85),rgba(124,90,46,0));transform-origin:center;animation:{{ aLine }}"></div>
+    <div style="margin-top:clamp(14px,2.2vh,24px);font-weight:400;font-style:italic;font-size:clamp(14px,1.2vw,20px);line-height:1.5;color:#2B151D;opacity:.9;animation:{{ aMsg }};text-wrap:pretty">Two hearts, one journey, a lifetime of love.</div>
+    <div style="margin-top:clamp(20px,3.4vh,40px);display:flex;flex-direction:column;align-items:center;gap:clamp(2px,.5vh,6px);animation:{{ aDate }}">
+      <div style="font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:clamp(10px,.78vw,12px);letter-spacing:.44em;text-transform:uppercase;color:#7C5A2E">Thursday</div>
+      <div style="font-weight:300;font-size:clamp(46px,5.2vw,84px);line-height:.9;color:#2B151D">08</div>
+      <div style="font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:clamp(10px,.78vw,12px);letter-spacing:.44em;text-transform:uppercase;color:#7C5A2E">October 2026</div>
+    </div>
+  </div>
+  </sc-if>
+
+  <div style="position:absolute;left:50%;bottom:max(22px,env(safe-area-inset-bottom));transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:9px;pointer-events:none;animation:{{ aHint }}">
+    <div style="font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:10px;letter-spacing:.4em;text-transform:uppercase;color:#4A3324;opacity:.85">{{ hintLabel }}</div>
+    <div style="width:1px;height:34px;background:linear-gradient(180deg,rgba(74,51,36,.7),rgba(74,51,36,0));animation:bob 2.8s ease-in-out infinite"></div>
+  </div>
+
+  <div onClick="{{ toggleSound }}" style="position:absolute;left:max(20px,env(safe-area-inset-left));top:max(20px,env(safe-area-inset-top));display:flex;align-items:center;gap:9px;cursor:pointer;opacity:.7;animation:{{ aChrome }}" style-hover="opacity:1">
+    <div style="width:26px;height:26px;border-radius:50%;border:1px solid rgba(124,90,46,.55);display:flex;align-items:center;justify-content:center;color:#7C5A2E;font-size:12px;line-height:1">{{ soundGlyph }}</div>
+    <div style="font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:9px;letter-spacing:.32em;text-transform:uppercase;color:#4A3324">{{ soundLabel }}</div>
+  </div>
+
+  <div onClick="{{ openMenu }}" style="position:absolute;right:max(20px,env(safe-area-inset-right));top:max(20px,env(safe-area-inset-top));display:flex;flex-direction:column;gap:6px;padding:8px;cursor:pointer;opacity:.75;animation:{{ aChrome }}" style-hover="opacity:1">
+    <div style="width:26px;height:1px;background:#4A3324"></div>
+    <div style="width:18px;height:1px;background:#4A3324;margin-left:auto"></div>
+  </div>
+
+  <sc-if value="{{ menu }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeMenu }}" style="position:absolute;inset:0;background:rgba(43,21,29,.9);backdrop-filter:blur(14px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(16px,3vh,30px);animation:fadeIn 500ms ease both;cursor:pointer">
+      <div style="font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:9px;letter-spacing:.44em;text-transform:uppercase;color:#B99A68;margin-bottom:clamp(8px,2vh,18px)">K &nbsp;+&nbsp; S</div>
+      <div style="font-weight:300;font-size:clamp(28px,3.4vw,48px);line-height:1.1;color:#F7F1E8;animation:riseIn 700ms ease 60ms both">Invitation</div>
+      <div style="font-weight:300;font-size:clamp(28px,3.4vw,48px);line-height:1.1;color:#F7F1E8;animation:riseIn 700ms ease 140ms both">Poruwa Ceremony</div>
+      <div style="font-weight:300;font-size:clamp(28px,3.4vw,48px);line-height:1.1;color:#F7F1E8;animation:riseIn 700ms ease 220ms both">Venue</div>
+      <div style="font-weight:300;font-size:clamp(28px,3.4vw,48px);line-height:1.1;color:#F7F1E8;animation:riseIn 700ms ease 300ms both">RSVP</div>
+      <div style="margin-top:clamp(18px,4vh,40px);font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:8px;letter-spacing:.4em;text-transform:uppercase;color:rgba(247,241,232,.5)">Tap anywhere to close</div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ plateRight }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;top:0;bottom:0;right:0;width:min(64vw,820px);pointer-events:none;backdrop-filter:blur(14px) saturate(.8);background:linear-gradient(90deg,rgba(247,241,232,0) 0%,rgba(247,241,232,.72) 12%,rgba(247,241,232,.94) 22%,rgba(247,241,232,.97) 100%);-webkit-mask-image:linear-gradient(90deg,rgba(0,0,0,0) 0%,rgba(0,0,0,1) 15%);mask-image:linear-gradient(90deg,rgba(0,0,0,0) 0%,rgba(0,0,0,1) 15%);animation:{{ aScrim }}"></div>
+  </sc-if>
+  <sc-if value="{{ plateBottom }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:0;right:0;bottom:0;height:{{ plateH }};pointer-events:none;backdrop-filter:blur(14px) saturate(.8);background:linear-gradient(0deg,rgba(247,241,232,.97) 0%,rgba(247,241,232,.96) 82%,rgba(247,241,232,.72) 94%,rgba(247,241,232,0) 100%);-webkit-mask-image:linear-gradient(0deg,rgba(0,0,0,1) 0%,rgba(0,0,0,1) 92%,rgba(0,0,0,0) 100%);mask-image:linear-gradient(0deg,rgba(0,0,0,1) 0%,rgba(0,0,0,1) 92%,rgba(0,0,0,0) 100%);animation:{{ aScrimB }}"></div>
+  </sc-if>
+
+  <sc-if value="{{ mountPanel }}" hint-placeholder-val="{{ false }}">
+    <div ref="{{ panelRef }}" style="position:absolute;right:max(4vw,20px);bottom:{{ panelBottom }};width:min(38vw,420px);min-width:min(88vw,300px);animation:{{ aPanel }}">
+
+      <sc-if value="{{ atVenue }}" hint-placeholder-val="{{ false }}">
+        <div>
+          <div style="font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:clamp(10px,.78vw,12px);letter-spacing:.42em;text-transform:uppercase;color:#7C5A2E;animation:riseIn 1100ms cubic-bezier(.2,.7,.2,1) both">Venue</div>
+          <div style="margin-top:clamp(8px,1.4vh,16px);font-weight:300;font-size:clamp(30px,3.4vw,54px);line-height:1.06;color:#3A2028;animation:riseIn 1300ms cubic-bezier(.2,.7,.2,1) 180ms both">Hotel Grand<br>Guardian</div>
+          <div style="margin-top:clamp(10px,1.6vh,18px);font-style:italic;font-size:clamp(15px,1.2vw,20px);line-height:1.5;color:#4A3324;animation:riseIn 1200ms ease 360ms both">Together with our beloved families, we joyfully invite you to celebrate our wedding.<br>Grand Ball Room &middot; Ratnapura</div>
+          <div style="margin-top:clamp(20px,3vh,34px);display:flex;flex-wrap:wrap;gap:12px;animation:riseIn 1100ms ease 560ms both">
+            <div onClick="{{ openMap }}" style="display:flex;align-items:center;gap:9px;min-height:44px;padding:0 20px;border:1px solid rgba(124,90,46,.6);border-radius:999px;cursor:pointer;font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:#4A3324;transition:background 300ms ease,border-color 300ms ease" style-hover="background:rgba(124,90,46,.12);border-color:rgba(124,90,46,.9)">View location</div>
+            <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=Kavindu%20%26%20Sanduni%20Wedding&amp;dates=20261008T040500Z/20261008T070000Z&amp;location=Hotel%20Grand%20Guardian%2C%20Ratnapura" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:9px;min-height:44px;padding:0 20px;border-bottom:1px solid rgba(124,90,46,.5);cursor:pointer;font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:#4A3324;text-decoration:none;transition:border-color 300ms ease" style-hover="border-color:rgba(124,90,46,.95)">Add to calendar</a>
+          </div>
+        </div>
+      </sc-if>
+
+    </div>
+  </sc-if>
+
+  <div style="position:absolute;left:max(20px,env(safe-area-inset-left));bottom:max(22px,env(safe-area-inset-bottom));display:flex;align-items:center;gap:10px;pointer-events:none;animation:{{ aChapters }}">
+    <div style="font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:9px;letter-spacing:.3em;color:{{ c1 }}">01</div>
+    <div style="width:26px;height:1px;background:rgba(124,90,46,.45)"></div>
+    <div style="font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:9px;letter-spacing:.3em;color:{{ c2 }}">02</div>
+    <div style="width:26px;height:1px;background:rgba(124,90,46,.45)"></div>
+    <div style="font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:9px;letter-spacing:.3em;color:{{ c3 }}">03</div>
+  </div>
+
+  <sc-if value="{{ atFinal }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;overflow:hidden;animation:fadeIn 2200ms ease both">
+      <div style="position:absolute;inset:0;overflow:hidden;background:{{ finalBase }}">
+        <video ref="{{ v3 }}" playsinline="true" muted="{{ muted }}" onTimeUpdate="{{ onV3Time }}" onEnded="{{ onV3End }}" preload="auto" src="uploads/scene3.mp4" style="position:absolute;inset:0;width:100%;height:100%;object-fit:{{ fitV2 }};object-position:center;display:block;transform-origin:50% 50%;transition:transform 2600ms cubic-bezier(.3,0,.2,1);transform:{{ vPan3 }}"></video>
+      </div>
+
+
+      <div style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 100% at 50% 46%,rgba(58,32,40,0) 46%,rgba(58,32,40,.20) 100%);animation:glow 14s ease-in-out infinite"></div>
+
+      <div style="position:absolute;inset:0;pointer-events:none;overflow:hidden">
+        <div style="position:absolute;left:14%;top:78%;width:3px;height:3px;border-radius:50%;background:#D6C09C;box-shadow:0 0 10px rgba(214,192,156,.95);animation:drift 19s linear infinite"></div>
+        <div style="position:absolute;left:29%;top:88%;width:2px;height:2px;border-radius:50%;background:#C9A66B;box-shadow:0 0 7px rgba(201,166,107,.9);animation:drift 24s linear -7s infinite"></div>
+        <div style="position:absolute;left:47%;top:92%;width:2px;height:2px;border-radius:50%;background:#D6C09C;box-shadow:0 0 8px rgba(214,192,156,.9);animation:drift 21s linear -13s infinite"></div>
+        <div style="position:absolute;left:66%;top:82%;width:3px;height:3px;border-radius:50%;background:#C9A66B;box-shadow:0 0 10px rgba(201,166,107,.85);animation:drift 27s linear -4s infinite"></div>
+        <div style="position:absolute;left:83%;top:90%;width:2px;height:2px;border-radius:50%;background:#D6C09C;box-shadow:0 0 7px rgba(214,192,156,.85);animation:drift 23s linear -17s infinite"></div>
+        <div style="position:absolute;left:8%;top:44%;width:2px;height:2px;border-radius:50%;background:#C9A66B;box-shadow:0 0 8px rgba(201,166,107,.8);animation:drift 29s linear -9s infinite"></div>
+        <div style="position:absolute;left:92%;top:40%;width:2px;height:2px;border-radius:50%;background:#D6C09C;box-shadow:0 0 8px rgba(214,192,156,.8);animation:drift 31s linear -21s infinite"></div>
+        <div style="position:absolute;left:6%;top:34%;width:5px;height:5px;border-radius:50%;background:rgba(247,224,178,.9);box-shadow:0 0 14px 4px rgba(247,224,178,.6);animation:flicker 5.2s ease-in-out infinite"></div>
+        <div style="position:absolute;left:95%;top:30%;width:5px;height:5px;border-radius:50%;background:rgba(247,224,178,.9);box-shadow:0 0 14px 4px rgba(247,224,178,.6);animation:flicker 6.4s ease-in-out -2s infinite"></div>
+        <div style="position:absolute;left:22%;top:20%;width:4px;height:4px;border-radius:50%;background:rgba(247,224,178,.85);box-shadow:0 0 12px 3px rgba(247,224,178,.5);animation:flicker 7.1s ease-in-out -3.5s infinite"></div>
+        <div style="position:absolute;left:79%;top:16%;width:4px;height:4px;border-radius:50%;background:rgba(247,224,178,.85);box-shadow:0 0 12px 3px rgba(247,224,178,.5);animation:flicker 6.1s ease-in-out -1.2s infinite"></div>
+      </div>
+
+      <sc-if value="{{ finalText }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;left:50%;top:9%;transform:translateX(-50%);width:min(72vw,520px);text-align:center;animation:fadeIn 2000ms ease 400ms both">
+        <div style="font-weight:300;font-size:clamp(28px,3.1vw,46px);line-height:1.1;letter-spacing:.02em;color:#3A2028">Kavindu &amp; Sanduni</div>
+        <div style="margin-top:clamp(6px,1vh,12px);font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:clamp(11px,1vw,15px);letter-spacing:.42em;color:#7C5A2E">08 &bull; 10 &bull; 2026</div>
+      </div>
+
+      <div style="position:absolute;left:0;right:0;bottom:0;height:66%;pointer-events:none;background:linear-gradient(0deg,rgba(43,21,29,.88) 0%,rgba(43,21,29,.82) 52%,rgba(43,21,29,.72) 72%,rgba(43,21,29,.34) 88%,rgba(43,21,29,0) 100%);animation:fadeIn 1800ms ease both"></div>
+
+      <div style="position:absolute;left:50%;bottom:clamp(20px,3.6vh,44px);transform:translateX(-50%);width:min(88vw,760px);text-align:center">
+        <div style="font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:clamp(10px,.8vw,12px);letter-spacing:.44em;text-transform:uppercase;color:#EBD9B6;animation:riseIn 1600ms cubic-bezier(.2,.7,.2,1) 900ms both">One last thing...</div>
+        <div style="margin-top:clamp(6px,1.4vh,20px);font-weight:300;font-size:clamp(24px,2.9vw,48px);line-height:1.06;color:#F9F3EA;text-wrap:pretty;animation:riseIn 1800ms cubic-bezier(.2,.7,.2,1) 1500ms both">We would love to celebrate with you.</div>
+        <div style="margin-top:clamp(4px,.9vh,12px);font-style:italic;font-weight:400;font-size:clamp(14px,1.2vw,20px);color:#E4D2B4;animation:riseIn 1600ms cubic-bezier(.2,.7,.2,1) 2100ms both">Will you be joining us?</div>
+
+        <div style="margin-top:clamp(8px,1.4vh,18px);display:flex;flex-direction:column;align-items:center;gap:clamp(5px,.9vh,11px);animation:riseIn 1600ms cubic-bezier(.2,.7,.2,1) 2600ms both">
+          <div style="font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:clamp(10px,.78vw,12px);letter-spacing:.32em;text-transform:uppercase;color:#D6BC8A">{{ countdown }}</div>
+          <div style="font-size:clamp(15px,1.25vw,21px);color:#F9F3EA">Thursday, 8 October 2026 &middot; Hotel Grand Guardian, Ratnapura</div>
+          <div style="margin-top:clamp(2px,.5vh,8px);font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:clamp(10px,.76vw,12px);letter-spacing:.24em;text-transform:uppercase;color:#E4D2B4;line-height:1.9">Poruwa Ceremony 9:35 am&nbsp;&middot; Grand Ball Room</div>
+        </div>
+
+        <div style="margin-top:clamp(14px,2.4vh,30px);display:flex;flex-direction:row;flex-wrap:wrap;justify-content:center;align-items:center;gap:clamp(10px,1.4vw,18px);animation:riseIn 1600ms cubic-bezier(.2,.7,.2,1) 3400ms both">
+          <div onClick="{{ openRsvp }}" style="min-height:50px;display:flex;align-items:center;padding:0 clamp(32px,3.8vw,54px);border:1px solid rgba(214,188,138,.9);border-radius:8px;background:rgba(43,21,29,.32);cursor:pointer;font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:12px;letter-spacing:.42em;text-transform:uppercase;color:#F9F3EA;transition:background 300ms ease,transform 300ms ease,border-color 300ms ease" style-hover="background:rgba(214,188,138,.26);border-color:#E4D2B4;transform:translateY(-3px)">RSVP</div>
+          <div onClick="{{ openMap }}" style="min-height:44px;display:flex;align-items:center;padding:0 12px;border-radius:6px;background:transparent;border-bottom:1px solid rgba(214,188,138,.5);cursor:pointer;font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:#E4D2B4;transition:border-color 300ms ease,color 300ms ease" style-hover="border-color:#E4D2B4;color:#F9F3EA">View location</div>
+        </div>
+      </div>
+      </sc-if>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ rsvpOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;background:rgba(43,21,29,.86);backdrop-filter:blur(12px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(14px,2.4vh,26px);padding:8vh 6vw;animation:fadeIn 400ms ease both">
+      <sc-if value="{{ rsvpSent }}" hint-placeholder-val="{{ false }}">
+        <div style="text-align:center;animation:riseIn 1000ms ease both">
+          <div style="font-weight:300;font-style:italic;font-size:clamp(24px,2.6vw,40px);color:#F7F1E8">Thank you — we can't wait to see you.</div>
+          <div onClick="{{ closeRsvp }}" style="margin:clamp(22px,3.4vh,38px) auto 0;width:max-content;min-height:44px;display:flex;align-items:center;padding:0 24px;border:1px solid rgba(201,166,107,.6);border-radius:999px;cursor:pointer;font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:#F7F1E8">Close</div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ rsvpForm }}" hint-placeholder-val="{{ true }}">
+        <div style="width:min(90vw,440px);text-align:center">
+          <div style="font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:10px;letter-spacing:.46em;text-transform:uppercase;color:#C9A66B">RSVP</div>
+          <div style="margin-top:14px;font-weight:300;font-size:clamp(24px,2.4vw,38px);color:#F7F1E8">We would be delighted to celebrate with you.</div>
+          <div style="margin-top:10px;font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:9px;letter-spacing:.36em;text-transform:uppercase;color:#C9A66B">Kindly reply by 25 September 2026</div>
+          <input value="{{ rsvpName }}" onChange="{{ onRsvpName }}" placeholder="Your name" style="margin-top:clamp(20px,3vh,32px);width:100%;min-height:48px;padding:0 16px;background:transparent;border:none;border-bottom:1px solid rgba(214,192,156,.5);outline:none;font-family:'Cormorant Garamond',Georgia,serif;font-size:19px;color:#F7F1E8;text-align:center">
+          <div style="margin-top:clamp(20px,3vh,32px);display:flex;justify-content:center;gap:12px">
+            <div onClick="{{ sendYes }}" style="min-height:48px;display:flex;align-items:center;padding:0 26px;border:1px solid rgba(201,166,107,.75);border-radius:8px;cursor:pointer;font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:#F7F1E8;transition:background 300ms ease" style-hover="background:rgba(201,166,107,.24)">Joyfully yes</div>
+            <div onClick="{{ sendNo }}" style="min-height:48px;display:flex;align-items:center;padding:0 26px;border-bottom:1px solid rgba(214,192,156,.4);cursor:pointer;font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:rgba(247,241,232,.8);transition:border-color 300ms ease" style-hover="border-color:rgba(214,192,156,.9)">With regret</div>
+          </div>
+          <div onClick="{{ closeRsvp }}" style="margin:clamp(22px,3.4vh,36px) auto 0;width:max-content;font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:9px;letter-spacing:.4em;text-transform:uppercase;color:rgba(247,241,232,.55);cursor:pointer">Close</div>
+        </div>
+      </sc-if>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ mapOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;background:rgba(43,21,29,.82);backdrop-filter:blur(10px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:6vh 5vw;animation:fadeIn 400ms ease both">
+      <div style="font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:10px;letter-spacing:.42em;text-transform:uppercase;color:#C8AA79">Hotel Grand Guardian, Ratnapura</div>
+      <iframe title="Venue map" src="https://www.openstreetmap.org/export/embed.html?bbox=80.3694%2C6.7360%2C80.3894%2C6.7500&amp;layer=mapnik&amp;marker=6.7430006%2C80.3793568" style="width:min(90vw,900px);height:min(60vh,520px);border:1px solid rgba(214,192,156,.35);filter:saturate(.75) contrast(.95)"></iframe>
+      <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:12px">
+        <a href="https://maps.app.goo.gl/UDf8WCiEpaLcBLcG8" target="_blank" rel="noopener" style="min-height:44px;display:flex;align-items:center;padding:0 22px;border:1px solid rgba(201,166,107,.7);border-radius:999px;font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:#F7F1E8;text-decoration:none">Get directions</a>
+        <div onClick="{{ closeMap }}" style="min-height:44px;display:flex;align-items:center;padding:0 22px;border-bottom:1px solid rgba(214,192,156,.45);cursor:pointer;font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:rgba(247,241,232,.85)">Close</div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ intro }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;inset:0;background:#2B151D;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;animation:{{ aIntro }}">
+      <div style="position:absolute;inset:0;background:radial-gradient(70% 60% at 50% 50%,rgba(200,170,121,.10),rgba(43,21,29,0) 70%)"></div>
+      <div style="font-weight:300;font-size:clamp(44px,6vw,96px);line-height:1;letter-spacing:.06em;color:#F7F1E8;animation:introIn 1100ms ease both">K &nbsp;+&nbsp; S</div>
+      <div style="font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:9px;letter-spacing:.5em;text-transform:uppercase;color:#C8AA79;animation:introIn 1100ms ease 250ms both">Our story begins</div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:&quot;100%&quot;}}">
+class Component extends DCLogic {
+  state = { phase: 'intro', muted: true, menu: false, portrait: false, vw: 1200, vh: 800, finalText: false, v3Center: false, intro: true, needsTap: false, zoom: false, step: -1, mapOpen: false, rsvpOpen: false, rsvpSent: false, rsvpName: '', countdown: '' };
+
+  v1 = React.createRef();
+  v2 = React.createRef();
+
+  componentDidMount() {
+    this.mq = window.matchMedia('(max-aspect-ratio: 1/1)');
+    this.onMq = () => this.setState({ portrait: this.mq.matches, vw: window.innerWidth, vh: window.innerHeight });
+    this.onMq();
+    this.mq.addEventListener('change', this.onMq);
+    this.onResize = () => this.setState({ vw: window.innerWidth, vh: window.innerHeight });
+    window.addEventListener('resize', this.onResize);
+    this.tick();
+    this.ct = setInterval(() => this.tick(), 60000);
+
+
+    this.t1 = setTimeout(() => {
+      this.setState({ phase: 'video1' });
+      const v = this.v1.current;
+      if (v) {
+        const p = v.play();
+        if (p && p.catch) p.catch(() => this.setState({ needsTap: true, intro: false }));
+      }
+      this.t2 = setTimeout(() => this.setState({ intro: false }), 1400);
+    }, 1300);
+
+    this.onAdvance = (e) => {
+      if (e.key === 'Escape') { this.setState({ menu: false, mapOpen: false, rsvpOpen: false }); return; }
+      if (this.state.menu || this.state.mapOpen || this.state.rsvpOpen) return;
+      if (this.lock && Date.now() < this.lock) return;
+      const gesture = e.type === 'wheel' ? 'wheel' : (e.type === 'keydown' ? 'key' : 'touch');
+      let dir = 1;
+      if (e.type === 'wheel') dir = e.deltaY < 0 ? -1 : 1;
+      else if (e.type === 'keydown') dir = (e.key === 'ArrowUp' || e.key === 'ArrowLeft' || e.key === 'PageUp') ? -1 : 1;
+      if (dir < 0) this.back(); else this.forward(gesture);
+    };
+    this.onTouchStart = (e) => { this.tY = e.touches && e.touches[0] ? e.touches[0].clientY : null; };
+    this.onTouchEnd = (e) => {
+      if (this.state.menu || this.state.mapOpen || this.state.rsvpOpen) return;
+      if (this.lock && Date.now() < this.lock) return;
+      const y = e.changedTouches && e.changedTouches[0] ? e.changedTouches[0].clientY : null;
+      const dy = (this.tY == null || y == null) ? 0 : this.tY - y;
+      if (dy < -40) this.back(); else this.forward('touch');
+    };
+    window.addEventListener('wheel', this.onAdvance, { passive: true });
+    window.addEventListener('touchstart', this.onTouchStart, { passive: true });
+    window.addEventListener('touchend', this.onTouchEnd, { passive: true });
+    window.addEventListener('keydown', this.onAdvance);
+  }
+
+  // Video 2 is object-fit:contain in portrait, so the whole 16:9 frame is vw wide at scale 1.
+  // scale therefore == frame width in viewport widths.
+  fillScale() { return this.state.vh / (this.state.vw * 9 / 16); }
+  endGeom() {
+    const vw = this.state.vw, vh = this.state.vh;
+    const s = Math.min(this.fillScale(), 2.35); // widest framing that keeps both figures on screen
+    const frameW = s * vw, frameH = s * vw * 9 / 16;
+    const shift = Math.max(0, Math.min((frameW - vw) / 2, (0.5 - 0.17) * frameW));
+    return { s: s, shift: shift, offY: (vh - frameH) / 2, gapPct: Math.max(0, (vh - frameH) / vh * 100) };
+  }
+
+  v3 = React.createRef();
+  panelRef = React.createRef();
+
+  componentDidUpdate() {
+    const v3 = this.v3.current;
+    if (v3 && !this.state.v3Center && !this.centerT) {
+      this.centerT = setTimeout(() => this.setState({ v3Center: true }), 420);
+    }
+    if (v3 && v3.paused && !v3.ended) { v3.muted = this.state.muted; const p = v3.play(); if (p && p.catch) p.catch(() => this.setState({ finalText: true })); }
+    const el = this.panelRef.current;
+    if (!el) return;
+    const h = el.offsetHeight;
+    if (h && Math.abs(h - (this.state.panelH || 0)) > 2) this.setState({ panelH: h });
+  }
+
+  tick() {
+    const diff = new Date('2026-10-08T09:35:00+05:30') - Date.now();
+    if (diff <= 0) { this.setState({ countdown: 'Today is the day' }); return; }
+    const d = Math.floor(diff / 86400000), h = Math.floor(diff / 3600000) % 24, m = Math.floor(diff / 60000) % 60;
+    this.setState({ countdown: d + ' days  ' + h + ' hrs  ' + m + ' min' });
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.ct);
+    clearTimeout(this.t1); clearTimeout(this.t2); clearTimeout(this.t3); clearTimeout(this.centerT);
+    this.mq && this.mq.removeEventListener('change', this.onMq);
+    window.removeEventListener('wheel', this.onAdvance);
+    window.removeEventListener('touchstart', this.onTouchStart);
+    window.removeEventListener('touchend', this.onTouchEnd);
+    window.removeEventListener('keydown', this.onAdvance);
+    window.removeEventListener('resize', this.onResize);
+  }
+
+  forward(gesture) {
+    const ph = this.state.phase;
+    if (ph === 'invite') { this.lock = Date.now() + 1200; this.advance(); }
+    else if (ph === 'video1' && gesture !== 'touch') { this.lock = Date.now() + 1200; this.skipVideo(); }
+    else if (ph === 'video2') {
+      if (this.state.step === -1) {
+        if (gesture === 'touch') return;
+        const v = this.v2.current;
+        this.lock = Date.now() + 1200;
+        try { if (v && v.duration) v.currentTime = Math.max(0, v.duration - 0.05); } catch (err) {}
+      } else if (this.state.step < 1) {
+        if (!this.venueAt || Date.now() - this.venueAt < 1800) return;
+        this.lock = Date.now() + 1400;
+        this.setState(st => ({ step: st.step + 1 }));
+      }
+    }
+  }
+
+  // Reverse gesture (scroll up / swipe down / arrow up) steps back a section.
+  back() {
+    const ph = this.state.phase, st = this.state.step;
+    if (ph === 'video2' && st === 1) {
+      const v3 = this.v3.current, v2 = this.v2.current;
+      if (v3) { v3.pause(); try { v3.currentTime = 0; } catch (e) {} }
+      if (v2) { try { if (v2.duration) v2.currentTime = Math.max(0, v2.duration - 0.05); } catch (e) {} v2.pause(); }
+      this.lock = Date.now() + 1400;
+      this.venueAt = Date.now();
+      clearTimeout(this.centerT); this.centerT = null;
+      this.setState({ step: 0, finalText: false, v3Center: false });
+    } else if (ph === 'video2' && st === 0) {
+      const v2 = this.v2.current;
+      if (v2) { v2.pause(); try { v2.currentTime = 0; } catch (e) {} }
+      this.lock = Date.now() + 1600;
+      this.setState({ phase: 'invite', step: -1, zoom: true, finalText: false });
+    } else if (ph === 'invite') {
+      const v1 = this.v1.current;
+      this.lock = Date.now() + 1600;
+      this.setState({ phase: 'video1', zoom: false });
+      if (v1) { try { v1.currentTime = 0; } catch (e) {} const p = v1.play(); if (p && p.catch) p.catch(() => {}); }
+    }
+  }
+
+  skipVideo() {
+    const v = this.v1.current;
+    try { if (v && v.duration) v.currentTime = Math.max(0, v.duration - 0.05); } catch (e) {}
+    if (v) v.pause();
+    this.setState({ phase: 'invite', intro: false, zoom: true });
+  }
+
+  advance() {
+    // Unlock video 2 inside the gesture's user-activation window, then park it at frame 0.
+    const v = this.v2.current;
+    if (v) {
+      try { v.currentTime = 0; } catch (e) {}
+      v.muted = this.state.muted;
+      const p = v.play();
+      if (p && p.catch) p.catch(() => this.setState({ needsTap: true }));
+    }
+    this.setState({ phase: 'outro' });
+    this.t3 = setTimeout(() => this.setState({ phase: 'video2' }), 2200);
+  }
+
+  startV2() {
+    const v = this.v2.current;
+    if (!v) return;
+    v.muted = this.state.muted;
+    const p = v.play();
+    if (p && p.then) p.then(() => this.setState({ needsTap: false })).catch(() => this.setState({ needsTap: true }));
+  }
+
+  renderVals() {
+    const ph = this.state.phase;
+    const st = this.state.step;
+    const shown = ph === 'invite' || ph === 'outro';
+    const out = ph === 'outro' || ph === 'video2';
+    const inv = (delay, outAnim, outDelay) =>
+      out ? `${outAnim} 900ms cubic-bezier(.4,0,.2,1) ${outDelay}ms both`
+          : (shown ? `riseIn 1600ms cubic-bezier(.2,.7,.2,1) ${delay}ms both` : 'none');
+
+    return {
+      v1: this.v1,
+      v2: this.v2,
+      muted: this.state.muted,
+      intro: this.state.intro,
+      menu: this.state.menu,
+      // Only offered while a video actually needs a gesture to start — never over the closing card.
+      needsTap: this.state.needsTap && st < 0 && (ph === 'video1' || ph === 'video2'),
+      mapOpen: this.state.mapOpen,
+      openMap: () => this.setState({ mapOpen: true }),
+      closeMap: () => this.setState({ mapOpen: false }),
+      onV2End: () => { const v = this.v2.current; if (v) v.pause(); if (st < 0) { this.venueAt = Date.now(); this.setState({ step: 0, needsTap: false }); } },
+      onV2Time: (e) => {
+        const v = e.currentTarget;
+        if (st < 0 && v.duration && v.duration - v.currentTime < 3.4) { this.venueAt = Date.now(); this.setState({ step: 0, needsTap: false }); }
+      },
+      mountPanel: st >= 0,
+      atVenue: st === 0,
+      atFinal: st === 1,
+      countdown: this.state.countdown,
+
+      rsvpOpen: this.state.rsvpOpen,
+      rsvpSent: this.state.rsvpSent,
+      rsvpForm: !this.state.rsvpSent,
+      rsvpName: this.state.rsvpName,
+      onRsvpName: (e) => this.setState({ rsvpName: e.target.value }),
+      openRsvp: () => this.setState({ rsvpOpen: true }),
+      closeRsvp: () => this.setState({ rsvpOpen: false }),
+      sendYes: () => this.setState({ rsvpSent: true }),
+      sendNo: () => this.setState({ rsvpSent: true }),
+      aPanel: 'fadeIn 1200ms ease both',
+      // The ivory plate holds through the scene 2 -> 3 crossfade, then clears.
+      aScrim: st === 1 ? 'fadeOut 1800ms ease 3800ms both' : (st >= 0 ? 'fadeIn 2000ms ease both' : 'fadeOut 1ms linear both'),
+      aScrimB: st === 1 ? 'fadeOut 1800ms ease 3800ms both' : (st >= 0 ? 'fadeIn 2000ms ease both' : 'fadeOut 1ms linear both'),
+      plateRight: st >= 0 && !this.state.portrait,
+      plateBottom: st >= 0 && this.state.portrait,
+      aChapters: this.state.intro ? 'fadeOut 1ms linear both' : 'fadeIn 1600ms ease 800ms both',
+      c1: st === 1 ? 'rgba(228,210,180,.5)' : (ph === 'video2' ? 'rgba(74,51,36,.45)' : '#4A3324'),
+      c2: st === 1 ? 'rgba(228,210,180,.5)' : ((ph === 'video2' && st < 1) ? '#4A3324' : 'rgba(74,51,36,.45)'),
+      c3: st === 1 ? '#E4D2B4' : 'rgba(74,51,36,.45)',
+      aBg: ph === 'invite' ? 'fadeIn 1800ms ease both'
+        : (ph === 'outro' ? 'fadeOut 1200ms ease both' : 'fadeOut 1ms linear both'),
+      aV1: (ph === 'outro' || ph === 'video2') ? 'fadeOut 1ms linear both'
+        : (ph === 'invite' ? 'pushIn 5400ms cubic-bezier(.3,0,.24,1) both, fadeOut 1600ms ease 2400ms both'
+        : (this.state.zoom ? 'pushIn 5400ms cubic-bezier(.3,0,.24,1) both' : 'none')),
+      onV1Time: (e) => {
+        const v = e.currentTarget;
+        if (!this.state.zoom && v.duration && v.duration - v.currentTime < 2.4) this.setState({ zoom: true });
+      },
+      aV2: (ph === 'outro' || ph === 'video2') ? 'fadeIn 1400ms ease 700ms both' : 'fadeOut 1ms linear both',
+      resume: () => {
+        this.setState({ needsTap: false });
+        if (st >= 0) return;
+        if (ph === 'video2') this.startV2();
+        else { const v = this.v1.current; if (v) { const p = v.play(); if (p && p.catch) p.catch(() => this.skipVideo()); } }
+      },
+      mountText: shown || out,
+      onV1End: () => this.setState({ phase: 'invite', intro: false, zoom: true }),
+      fit: 'cover',
+      // Video 2 plays full-bleed. At the end it eases back to the widest framing where BOTH
+      // figures fit the phone's width (they sit ~17% across a frame they fill ~35% of), anchored
+      // to the top, panned as far as the frame allows so they read as centred, no edge exposed.
+      fitV2: this.state.portrait ? 'contain' : 'cover',
+      vPan: (() => {
+        if (!this.state.portrait) return 'none';
+        if (!(ph === 'video2' && st >= 0)) return 'scale(' + this.fillScale().toFixed(3) + ')';
+        const g = this.endGeom();
+        return 'translate(' + (g.shift / this.state.vw * 100).toFixed(2) + '%,-' + (g.offY / this.state.vh * 100).toFixed(2) + '%) scale(' + g.s.toFixed(3) + ')';
+      })(),
+      ivory: this.state.portrait && ph === 'video2' && st >= 0,
+      v3: this.v3,
+      finalText: this.state.finalText,
+      onV3Time: (e) => {
+        const v = e.currentTarget;
+        if (!this.state.finalText && v.duration && v.duration - v.currentTime < 3.2) this.setState({ finalText: true });
+      },
+      onV3End: () => { const v = this.v3.current; if (v) v.pause(); if (!this.state.finalText) this.setState({ finalText: true }); },
+      finalBase: this.state.portrait ? '#F4E6CB' : '#F2E3C6',
+      // Scene 3 picks up scene 2's top-anchored framing, then eases back to centre.
+      vPan3: (() => {
+        if (!this.state.portrait) return 'none';
+        const g = this.endGeom();
+        // Settles to full screen height, centred; starts from scene 2's framing so the move reads as one glide.
+        if (this.state.v3Center) return 'scale(' + this.fillScale().toFixed(3) + ')';
+        return 'translate(' + (g.shift / this.state.vw * 100).toFixed(2) + '%,-' + (g.offY / this.state.vh * 100).toFixed(2) + '%) scale(' + g.s.toFixed(3) + ')';
+      })(),
+      // Portrait: letterboxed 16:9 video is zoomed until it fills ~74% of the screen height,
+      // and the remaining top/bottom is covered by the ivory gradient bands.
+      // Plate is tall enough that the venue copy clears its feathered top edge.
+      plateH: Math.min(72, Math.max(
+        this.endGeom().gapPct + 3,
+        ((this.state.panelH || 300) + 130) / this.state.vh * 100
+      )).toFixed(2) + '%',
+      panelBottom: this.state.portrait ? '18px' : 'clamp(86px,12vh,132px)',
+      panelRef: this.panelRef,
+      hintLabel: this.state.portrait ? 'Swipe to continue' : 'Scroll to continue',
+      soundGlyph: this.state.muted ? '♪' : '♫',
+      soundLabel: this.state.muted ? 'Play music' : 'Mute',
+      aIntro: this.state.phase === 'intro' ? 'none' : 'introOut 1300ms ease both',
+      aEyebrow: inv(0, 'fadeOut', 0),
+      aNames: inv(900, 'fadeOut', 900),
+      aLine: shown && !out ? 'lineGrow 1800ms cubic-bezier(.2,.7,.2,1) 700ms both' : (out ? 'fadeOut 900ms ease 300ms both' : 'none'),
+      aMsg: inv(1900, 'fadeOut', 100),
+      aDate: inv(2600, 'liftOut', 200),
+      aHint: (shown && !out) ? 'fadeIn 1400ms ease 3600ms both'
+        : (ph === 'video2' && st === 0) ? 'fadeIn 1400ms ease 2400ms both'
+        : 'fadeOut 1ms linear both',
+      aChrome: out && ph === 'video2' ? 'fadeIn 1200ms ease both' : 'fadeIn 1600ms ease 2200ms both',
+      toggleSound: () => {
+        const m = !this.state.muted;
+        this.setState({ muted: m });
+        [this.v1.current, this.v2.current, this.v3.current].forEach(v => { if (v) v.muted = m; });
+      },
+      openMenu: () => this.setState({ menu: true }),
+      closeMenu: () => this.setState({ menu: false })
+    };
+  }
+}
+</script>
+</body>
+</html>
