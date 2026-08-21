@@ -34,8 +34,10 @@ a{color:#D6C09C;text-decoration:none}a:hover{color:#F7F1E8}
 <div style="position:fixed;inset:0;width:100vw;height:100dvh;background:#2B151D;overflow:hidden;font-family:'Cormorant Garamond',Georgia,serif;color:#F7F1E8;-webkit-font-smoothing:antialiased">
 
   <div style="position:absolute;inset:0;overflow:hidden">
-    <video ref="{{ v1 }}" playsinline="true" muted="{{ muted }}" preload="auto" onEnded="{{ onV1End }}" onTimeUpdate="{{ onV1Time }}" src="uploads/scene1.mp4" style="position:absolute;inset:0;width:100%;height:100%;object-fit:{{ fit }};object-position:center;display:block;transform-origin:50% 50%;will-change:transform;animation:{{ aV1 }}"></video>
+    <video ref="{{ v1 }}" playsinline="true" muted="{{ true }}" preload="auto" onEnded="{{ onV1End }}" onTimeUpdate="{{ onV1Time }}" src="uploads/scene1.mp4" style="position:absolute;inset:0;width:100%;height:100%;object-fit:{{ fit }};object-position:center;display:block;transform-origin:50% 50%;will-change:transform;animation:{{ aV1 }}"></video>
   </div>
+
+  <audio ref="{{ song }}" src="uploads/song.mp3" loop="true" muted="{{ muted }}" preload="auto"></audio>
 
   <div style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(78% 66% at 50% 44%,#F9F4EC 0%,#F2E8D8 46%,#E7D8BF 78%,#DFCCAE 100%);animation:{{ aBg }}"></div>
 
@@ -44,7 +46,7 @@ a{color:#D6C09C;text-decoration:none}a:hover{color:#F7F1E8}
   </sc-if>
 
   <div style="position:absolute;inset:0;overflow:hidden">
-    <video ref="{{ v2 }}" playsinline="true" muted="{{ muted }}" onEnded="{{ onV2End }}" onTimeUpdate="{{ onV2Time }}" preload="auto" src="uploads/scene2.mp4" style="position:absolute;inset:0;width:100%;height:100%;object-fit:{{ fitV2 }};object-position:center;display:block;transform-origin:50% 50%;transition:transform 2200ms cubic-bezier(.3,0,.2,1);transform:{{ vPan }};animation:{{ aV2 }}"></video>
+    <video ref="{{ v2 }}" playsinline="true" muted="{{ true }}" onEnded="{{ onV2End }}" onTimeUpdate="{{ onV2Time }}" preload="auto" src="uploads/scene2.mp4" style="position:absolute;inset:0;width:100%;height:100%;object-fit:{{ fitV2 }};object-position:center;display:block;transform-origin:50% 50%;transition:transform 2200ms cubic-bezier(.3,0,.2,1);transform:{{ vPan }};animation:{{ aV2 }}"></video>
   </div>
 
   <sc-if value="{{ needsTap }}" hint-placeholder-val="{{ false }}">
@@ -95,7 +97,7 @@ a{color:#D6C09C;text-decoration:none}a:hover{color:#F7F1E8}
     <div style="width:1px;height:34px;background:linear-gradient(180deg,rgba(74,51,36,.7),rgba(74,51,36,0));animation:bob 2.8s ease-in-out infinite"></div>
   </div>
 
-  <div onClick="{{ toggleSound }}" style="position:absolute;left:max(20px,env(safe-area-inset-left));top:max(20px,env(safe-area-inset-top));display:flex;align-items:center;gap:9px;cursor:pointer;opacity:.7;animation:{{ aChrome }}" style-hover="opacity:1">
+  <div onClick="{{ toggleSound }}" style="position:absolute;left:max(20px,env(safe-area-inset-left));top:max(20px,env(safe-area-inset-top));display:flex;align-items:center;gap:9px;cursor:pointer;opacity:.7;animation:{{ aSound }}" style-hover="opacity:1">
     <div style="width:26px;height:26px;border-radius:50%;border:1px solid rgba(124,90,46,.55);display:flex;align-items:center;justify-content:center;color:#7C5A2E;font-size:12px;line-height:1">{{ soundGlyph }}</div>
     <div style="font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:9px;letter-spacing:.32em;text-transform:uppercase;color:#4A3324">{{ soundLabel }}</div>
   </div>
@@ -131,10 +133,6 @@ a{color:#D6C09C;text-decoration:none}a:hover{color:#F7F1E8}
           <div style="font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:clamp(10px,.78vw,12px);letter-spacing:.42em;text-transform:uppercase;color:#7C5A2E;animation:riseIn 1100ms cubic-bezier(.2,.7,.2,1) both">Venue</div>
           <div style="margin-top:clamp(8px,1.4vh,16px);font-weight:300;font-size:clamp(30px,3.4vw,54px);line-height:1.06;color:#3A2028;animation:riseIn 1300ms cubic-bezier(.2,.7,.2,1) 180ms both">Hotel Grand<br>Guardian</div>
           <div style="margin-top:clamp(10px,1.6vh,18px);font-style:italic;font-size:clamp(15px,1.2vw,20px);line-height:1.5;color:#4A3324;animation:riseIn 1200ms ease 360ms both">Together with our beloved families, we joyfully invite you to celebrate our wedding.<br>Grand Ball Room &middot; Ratnapura</div>
-          <div style="margin-top:clamp(20px,3vh,34px);display:flex;flex-wrap:wrap;gap:12px;animation:riseIn 1100ms ease 560ms both">
-            <div onClick="{{ openMap }}" style="display:flex;align-items:center;gap:9px;min-height:44px;padding:0 20px;border:1px solid rgba(124,90,46,.6);border-radius:999px;cursor:pointer;font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:#4A3324;transition:background 300ms ease,border-color 300ms ease" style-hover="background:rgba(124,90,46,.12);border-color:rgba(124,90,46,.9)">View location</div>
-            <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=Kavindu%20%26%20Sanduni%20Wedding&amp;dates=20261008T040500Z/20261008T070000Z&amp;location=Hotel%20Grand%20Guardian%2C%20Ratnapura" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:9px;min-height:44px;padding:0 20px;border-bottom:1px solid rgba(124,90,46,.5);cursor:pointer;font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:#4A3324;text-decoration:none;transition:border-color 300ms ease" style-hover="border-color:rgba(124,90,46,.95)">Add to calendar</a>
-          </div>
         </div>
       </sc-if>
 
@@ -152,7 +150,7 @@ a{color:#D6C09C;text-decoration:none}a:hover{color:#F7F1E8}
   <sc-if value="{{ atFinal }}" hint-placeholder-val="{{ false }}">
     <div style="position:absolute;inset:0;overflow:hidden;animation:fadeIn 2200ms ease both">
       <div style="position:absolute;inset:0;overflow:hidden;background:{{ finalBase }}">
-        <video ref="{{ v3 }}" playsinline="true" muted="{{ muted }}" onTimeUpdate="{{ onV3Time }}" onEnded="{{ onV3End }}" preload="auto" src="uploads/scene3.mp4" style="position:absolute;inset:0;width:100%;height:100%;object-fit:{{ fitV2 }};object-position:center;display:block;transform-origin:50% 50%;transition:transform 2600ms cubic-bezier(.3,0,.2,1);transform:{{ vPan3 }}"></video>
+        <video ref="{{ v3 }}" playsinline="true" muted="{{ true }}" onTimeUpdate="{{ onV3Time }}" onEnded="{{ onV3End }}" preload="auto" src="uploads/scene3.mp4" style="position:absolute;inset:0;width:100%;height:100%;object-fit:{{ fitV2 }};object-position:center;display:block;transform-origin:50% 50%;transition:transform 2600ms cubic-bezier(.3,0,.2,1);transform:{{ vPan3 }}"></video>
       </div>
 
 
@@ -250,6 +248,7 @@ class Component extends DCLogic {
 
   v1 = React.createRef();
   v2 = React.createRef();
+  song = React.createRef();
 
   componentDidMount() {
     this.mq = window.matchMedia('(max-aspect-ratio: 1/1)');
@@ -269,10 +268,12 @@ class Component extends DCLogic {
         const p = v.play();
         if (p && p.catch) p.catch(() => this.setState({ needsTap: true, intro: false }));
       }
+      this.playSong();
       this.t2 = setTimeout(() => this.setState({ intro: false }), 1400);
     }, 1300);
 
     this.onAdvance = (e) => {
+      this.resetIdle();
       if (e.key === 'Escape') { this.setState({ menu: false, mapOpen: false, rsvpOpen: false }); return; }
       if (this.state.menu || this.state.mapOpen || this.state.rsvpOpen) return;
       if (this.lock && Date.now() < this.lock) return;
@@ -282,8 +283,9 @@ class Component extends DCLogic {
       else if (e.type === 'keydown') dir = (e.key === 'ArrowUp' || e.key === 'ArrowLeft' || e.key === 'PageUp') ? -1 : 1;
       if (dir < 0) this.back(); else this.forward(gesture);
     };
-    this.onTouchStart = (e) => { this.tY = e.touches && e.touches[0] ? e.touches[0].clientY : null; };
+    this.onTouchStart = (e) => { this.resetIdle(); this.tY = e.touches && e.touches[0] ? e.touches[0].clientY : null; };
     this.onTouchEnd = (e) => {
+      this.resetIdle();
       if (this.state.menu || this.state.mapOpen || this.state.rsvpOpen) return;
       if (this.lock && Date.now() < this.lock) return;
       const y = e.changedTouches && e.changedTouches[0] ? e.changedTouches[0].clientY : null;
@@ -294,6 +296,21 @@ class Component extends DCLogic {
     window.addEventListener('touchstart', this.onTouchStart, { passive: true });
     window.addEventListener('touchend', this.onTouchEnd, { passive: true });
     window.addEventListener('keydown', this.onAdvance);
+    this.resetIdle();
+  }
+
+  // Auto-advance: if the visitor hasn't scrolled/swiped/pressed a key for a
+  // few seconds, gently move the story forward on their behalf.
+  resetIdle() {
+    clearTimeout(this.idleTimer);
+    this.idleTimer = setTimeout(() => this.autoAdvance(), 4500);
+  }
+
+  autoAdvance() {
+    if (this.state.menu || this.state.mapOpen || this.state.rsvpOpen) { this.resetIdle(); return; }
+    if (this.lock && Date.now() < this.lock) { this.resetIdle(); return; }
+    this.forward('auto');
+    this.resetIdle();
   }
 
   // Video 2 is object-fit:contain in portrait, so the whole 16:9 frame is vw wide at scale 1.
@@ -310,12 +327,20 @@ class Component extends DCLogic {
   v3 = React.createRef();
   panelRef = React.createRef();
 
+  playSong() {
+    const song = this.song.current;
+    if (!song) return;
+    song.muted = this.state.muted;
+    const p = song.play();
+    if (p && p.catch) p.catch(() => {});
+  }
+
   componentDidUpdate() {
     const v3 = this.v3.current;
     if (v3 && !this.state.v3Center && !this.centerT) {
       this.centerT = setTimeout(() => this.setState({ v3Center: true }), 420);
     }
-    if (v3 && v3.paused && !v3.ended) { v3.muted = this.state.muted; const p = v3.play(); if (p && p.catch) p.catch(() => this.setState({ finalText: true })); }
+    if (v3 && v3.paused && !v3.ended) { v3.muted = true; const p = v3.play(); if (p && p.catch) p.catch(() => this.setState({ finalText: true })); }
     const el = this.panelRef.current;
     if (!el) return;
     const h = el.offsetHeight;
@@ -330,8 +355,10 @@ class Component extends DCLogic {
   }
 
   componentWillUnmount() {
+    const song = this.song.current;
+    if (song) song.pause();
     clearInterval(this.ct);
-    clearTimeout(this.t1); clearTimeout(this.t2); clearTimeout(this.t3); clearTimeout(this.centerT);
+    clearTimeout(this.t1); clearTimeout(this.t2); clearTimeout(this.t3); clearTimeout(this.centerT); clearTimeout(this.idleTimer);
     this.mq && this.mq.removeEventListener('change', this.onMq);
     window.removeEventListener('wheel', this.onAdvance);
     window.removeEventListener('touchstart', this.onTouchStart);
@@ -394,7 +421,7 @@ class Component extends DCLogic {
     const v = this.v2.current;
     if (v) {
       try { v.currentTime = 0; } catch (e) {}
-      v.muted = this.state.muted;
+      v.muted = true;
       const p = v.play();
       if (p && p.catch) p.catch(() => this.setState({ needsTap: true }));
     }
@@ -405,7 +432,7 @@ class Component extends DCLogic {
   startV2() {
     const v = this.v2.current;
     if (!v) return;
-    v.muted = this.state.muted;
+    v.muted = true;
     const p = v.play();
     if (p && p.then) p.then(() => this.setState({ needsTap: false })).catch(() => this.setState({ needsTap: true }));
   }
@@ -422,6 +449,7 @@ class Component extends DCLogic {
     return {
       v1: this.v1,
       v2: this.v2,
+      song: this.song,
       muted: this.state.muted,
       intro: this.state.intro,
       menu: this.state.menu,
@@ -471,6 +499,7 @@ class Component extends DCLogic {
       aV2: (ph === 'outro' || ph === 'video2') ? 'fadeIn 1400ms ease 700ms both' : 'fadeOut 1ms linear both',
       resume: () => {
         this.setState({ needsTap: false });
+        this.playSong();
         if (st >= 0) return;
         if (ph === 'video2') this.startV2();
         else { const v = this.v1.current; if (v) { const p = v.play(); if (p && p.catch) p.catch(() => this.skipVideo()); } }
@@ -527,10 +556,18 @@ class Component extends DCLogic {
         : (ph === 'video2' && st === 0) ? 'fadeIn 1400ms ease 2400ms both'
         : 'fadeOut 1ms linear both',
       aChrome: out && ph === 'video2' ? 'fadeIn 1200ms ease both' : 'fadeIn 1600ms ease 2200ms both',
+      // Sound toggle reveals quickly (well before the intro screen clears) so it's
+      // already fully visible the moment the intro overlay fades out, instead of
+      // still fading in over the next couple of seconds.
+      aSound: out && ph === 'video2' ? 'fadeIn 1200ms ease both' : 'fadeIn 700ms ease 300ms both',
       toggleSound: () => {
         const m = !this.state.muted;
         this.setState({ muted: m });
-        [this.v1.current, this.v2.current, this.v3.current].forEach(v => { if (v) v.muted = m; });
+        const song = this.song.current;
+        if (song) {
+          song.muted = m;
+          if (!m) { const p = song.play(); if (p && p.catch) p.catch(() => {}); }
+        }
       },
       openMenu: () => this.setState({ menu: true }),
       closeMenu: () => this.setState({ menu: false })
