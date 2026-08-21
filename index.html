@@ -306,15 +306,23 @@ class Component extends DCLogic {
     this.idleTimer = setTimeout(() => this.autoAdvance(), 4500);
   }
 
+  // Fixed schedule: video plays -> ends -> its text appears -> wait `ms` -> move on.
+  // Kept as its own timer (armAdvance) rather than the generic idle nudge below, so the
+  // wait is always exactly `ms` regardless of stray scroll/touch events resetting idle.
+  armAdvance(ms) {
+    clearTimeout(this.tAutoAdv);
+    this.tAutoAdv = setTimeout(() => this.forward('auto'), ms);
+  }
+
   autoAdvance() {
     if (this.state.menu || this.state.mapOpen || this.state.rsvpOpen) { this.resetIdle(); return; }
     if (this.lock && Date.now() < this.lock) { this.resetIdle(); return; }
-    const ph = this.state.phase;
-    // Videos already advance themselves on their own onEnded handler once
-    // they finish playing — only nudge the static screens forward here, so
-    // an idle visitor never has a video cut off mid-playback.
-    const videoPlaying = ph === 'video1' || (ph === 'video2' && this.state.step === -1);
-    if (!videoPlaying) this.forward('auto');
+    const ph = this.state.phase, st = this.state.step;
+    // video1, invite (video1's text), and video2 up through the venue text (step <= 0)
+    // are all advanced by armAdvance() on a fixed schedule — only nudge phases that
+    // have no dedicated timer of their own (currently none; kept as a safety net).
+    const autoOwned = ph === 'video1' || ph === 'invite' || (ph === 'video2' && st <= 0);
+    if (!autoOwned) this.forward('auto');
     this.resetIdle();
   }
 
@@ -363,7 +371,7 @@ class Component extends DCLogic {
     const song = this.song.current;
     if (song) song.pause();
     clearInterval(this.ct);
-    clearTimeout(this.t1); clearTimeout(this.t2); clearTimeout(this.t3); clearTimeout(this.centerT); clearTimeout(this.idleTimer);
+    clearTimeout(this.t1); clearTimeout(this.t2); clearTimeout(this.t3); clearTimeout(this.centerT); clearTimeout(this.idleTimer); clearTimeout(this.tAutoAdv);
     this.mq && this.mq.removeEventListener('change', this.onMq);
     window.removeEventListener('wheel', this.onAdvance);
     window.removeEventListener('touchstart', this.onTouchStart);
@@ -384,6 +392,7 @@ class Component extends DCLogic {
         try { if (v && v.duration) v.currentTime = Math.max(0, v.duration - 0.05); } catch (err) {}
       } else if (this.state.step < 1) {
         if (!this.venueAt || Date.now() - this.venueAt < 1800) return;
+        clearTimeout(this.tAutoAdv);
         this.lock = Date.now() + 1400;
         this.setState(st => ({ step: st.step + 1 }));
       }
@@ -400,13 +409,16 @@ class Component extends DCLogic {
       this.lock = Date.now() + 1400;
       this.venueAt = Date.now();
       clearTimeout(this.centerT); this.centerT = null;
+      this.armAdvance(7500);
       this.setState({ step: 0, finalText: false, v3Center: false });
     } else if (ph === 'video2' && st === 0) {
       const v2 = this.v2.current;
       if (v2) { v2.pause(); try { v2.currentTime = 0; } catch (e) {} }
       this.lock = Date.now() + 1600;
+      this.armAdvance(7500);
       this.setState({ phase: 'invite', step: -1, zoom: true, finalText: false });
     } else if (ph === 'invite') {
+      clearTimeout(this.tAutoAdv);
       const v1 = this.v1.current;
       this.lock = Date.now() + 1600;
       this.setState({ phase: 'video1', zoom: false });
@@ -418,10 +430,12 @@ class Component extends DCLogic {
     const v = this.v1.current;
     try { if (v && v.duration) v.currentTime = Math.max(0, v.duration - 0.05); } catch (e) {}
     if (v) v.pause();
+    this.armAdvance(7500);
     this.setState({ phase: 'invite', intro: false, zoom: true });
   }
 
   advance() {
+    clearTimeout(this.tAutoAdv);
     // Unlock video 2 inside the gesture's user-activation window, then park it at frame 0.
     const v = this.v2.current;
     if (v) {
@@ -463,10 +477,10 @@ class Component extends DCLogic {
       mapOpen: this.state.mapOpen,
       openMap: () => this.setState({ mapOpen: true }),
       closeMap: () => this.setState({ mapOpen: false }),
-      onV2End: () => { const v = this.v2.current; if (v) v.pause(); if (st < 0) { this.venueAt = Date.now(); this.setState({ step: 0, needsTap: false }); } },
+      onV2End: () => { const v = this.v2.current; if (v) v.pause(); if (st < 0) { this.venueAt = Date.now(); this.armAdvance(5000); this.setState({ step: 0, needsTap: false }); } },
       onV2Time: (e) => {
         const v = e.currentTarget;
-        if (st < 0 && v.duration && v.duration - v.currentTime < 3.4) { this.venueAt = Date.now(); this.setState({ step: 0, needsTap: false }); }
+        if (st < 0 && v.duration && v.duration - v.currentTime < 3.4) { this.venueAt = Date.now(); this.armAdvance(5000); this.setState({ step: 0, needsTap: false }); }
       },
       mountPanel: st >= 0,
       atVenue: st === 0,
@@ -510,7 +524,10 @@ class Component extends DCLogic {
         else { const v = this.v1.current; if (v) { const p = v.play(); if (p && p.catch) p.catch(() => this.skipVideo()); } }
       },
       mountText: shown || out,
-      onV1End: () => this.setState({ phase: 'invite', intro: false, zoom: true }),
+      onV1End: () => {
+        this.armAdvance(5000);
+        this.setState({ phase: 'invite', intro: false, zoom: true });
+      },
       fit: 'cover',
       // Video 2 plays full-bleed. At the end it eases back to the widest framing where BOTH
       // figures fit the phone's width (they sit ~17% across a frame they fill ~35% of), anchored
