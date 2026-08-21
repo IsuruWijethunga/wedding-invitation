@@ -309,7 +309,12 @@ class Component extends DCLogic {
   autoAdvance() {
     if (this.state.menu || this.state.mapOpen || this.state.rsvpOpen) { this.resetIdle(); return; }
     if (this.lock && Date.now() < this.lock) { this.resetIdle(); return; }
-    this.forward('auto');
+    const ph = this.state.phase;
+    // Videos already advance themselves on their own onEnded handler once
+    // they finish playing — only nudge the static screens forward here, so
+    // an idle visitor never has a video cut off mid-playback.
+    const videoPlaying = ph === 'video1' || (ph === 'video2' && this.state.step === -1);
+    if (!videoPlaying) this.forward('auto');
     this.resetIdle();
   }
 
