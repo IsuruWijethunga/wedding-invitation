@@ -97,18 +97,18 @@ a{color:#D6C09C;text-decoration:none}a:hover{color:#F7F1E8}
     <div style="width:1px;height:34px;background:linear-gradient(180deg,rgba(74,51,36,.7),rgba(74,51,36,0));animation:bob 2.8s ease-in-out infinite"></div>
   </div>
 
-  <div onClick="{{ toggleSound }}" style="position:absolute;left:max(20px,env(safe-area-inset-left));top:max(20px,env(safe-area-inset-top));display:flex;align-items:center;gap:9px;cursor:pointer;opacity:.7;animation:{{ aSound }}" style-hover="opacity:1">
-    <div style="width:26px;height:26px;border-radius:50%;border:1px solid rgba(124,90,46,.55);display:flex;align-items:center;justify-content:center;color:#7C5A2E;font-size:12px;line-height:1">{{ soundGlyph }}</div>
-    <div style="font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:9px;letter-spacing:.32em;text-transform:uppercase;color:#4A3324">{{ soundLabel }}</div>
+  <div onClick="{{ toggleSound }}" style="position:absolute;left:max(20px,env(safe-area-inset-left));top:max(20px,env(safe-area-inset-top));z-index:5;display:flex;align-items:center;gap:10px;cursor:pointer;animation:{{ aSound }}" style-hover="transform:scale(1.06)">
+    <div style="width:44px;height:44px;border-radius:50%;background:rgba(43,21,29,.62);backdrop-filter:blur(6px);border:1.5px solid rgba(247,241,232,.9);box-shadow:0 3px 14px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;color:#F7F1E8;font-size:19px;font-weight:700;line-height:1">{{ soundGlyph }}</div>
+    <div style="font-family:'Jost',system-ui,sans-serif;font-weight:600;font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:#F7F1E8;text-shadow:0 1px 5px rgba(0,0,0,.45)">{{ soundLabel }}</div>
   </div>
 
-  <div onClick="{{ openMenu }}" style="position:absolute;right:max(20px,env(safe-area-inset-right));top:max(20px,env(safe-area-inset-top));display:flex;flex-direction:column;gap:6px;padding:8px;cursor:pointer;opacity:.75;animation:{{ aChrome }}" style-hover="opacity:1">
+  <div onClick="{{ openMenu }}" style="position:absolute;right:max(20px,env(safe-area-inset-right));top:max(20px,env(safe-area-inset-top));z-index:5;display:flex;flex-direction:column;gap:6px;padding:8px;cursor:pointer;opacity:.75;animation:{{ aChrome }}" style-hover="opacity:1">
     <div style="width:26px;height:1px;background:#4A3324"></div>
     <div style="width:18px;height:1px;background:#4A3324;margin-left:auto"></div>
   </div>
 
   <sc-if value="{{ menu }}" hint-placeholder-val="{{ false }}">
-    <div onClick="{{ closeMenu }}" style="position:absolute;inset:0;background:rgba(43,21,29,.9);backdrop-filter:blur(14px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(16px,3vh,30px);animation:fadeIn 500ms ease both;cursor:pointer">
+    <div onClick="{{ closeMenu }}" style="position:absolute;inset:0;z-index:10;background:rgba(43,21,29,.9);backdrop-filter:blur(14px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(16px,3vh,30px);animation:fadeIn 500ms ease both;cursor:pointer">
       <div style="font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:9px;letter-spacing:.44em;text-transform:uppercase;color:#B99A68;margin-bottom:clamp(8px,2vh,18px)">K &nbsp;+&nbsp; S</div>
       <div style="font-weight:300;font-size:clamp(28px,3.4vw,48px);line-height:1.1;color:#F7F1E8;animation:riseIn 700ms ease 60ms both">Invitation</div>
       <div style="font-weight:300;font-size:clamp(28px,3.4vw,48px);line-height:1.1;color:#F7F1E8;animation:riseIn 700ms ease 140ms both">Poruwa Ceremony</div>
@@ -132,7 +132,7 @@ a{color:#D6C09C;text-decoration:none}a:hover{color:#F7F1E8}
         <div>
           <div style="font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:clamp(10px,.78vw,12px);letter-spacing:.42em;text-transform:uppercase;color:#7C5A2E;animation:riseIn 1100ms cubic-bezier(.2,.7,.2,1) both">Venue</div>
           <div style="margin-top:clamp(8px,1.4vh,16px);font-weight:300;font-size:clamp(30px,3.4vw,54px);line-height:1.06;color:#3A2028;animation:riseIn 1300ms cubic-bezier(.2,.7,.2,1) 180ms both">Hotel Grand<br>Guardian</div>
-          <div style="margin-top:clamp(10px,1.6vh,18px);font-style:italic;font-size:clamp(15px,1.2vw,20px);line-height:1.5;color:#4A3324;animation:riseIn 1200ms ease 360ms both">Together with our beloved families, we joyfully invite you to celebrate our wedding.<br>Grand Ball Room &middot; Ratnapura</div>
+          <div style="margin-top:clamp(10px,1.6vh,18px);font-style:italic;font-size:clamp(15px,1.2vw,20px);line-height:1.5;color:#4A3324;animation:riseIn 1200ms ease 360ms both">Together with our beloved families, we joyfully invite you to celebrate our wedding.</div>
         </div>
       </sc-if>
 
@@ -186,11 +186,11 @@ a{color:#D6C09C;text-decoration:none}a:hover{color:#F7F1E8}
         <div style="margin-top:clamp(8px,1.4vh,18px);display:flex;flex-direction:column;align-items:center;gap:clamp(5px,.9vh,11px);animation:riseIn 1600ms cubic-bezier(.2,.7,.2,1) 2600ms both">
           <div style="font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:clamp(10px,.78vw,12px);letter-spacing:.32em;text-transform:uppercase;color:#D6BC8A">{{ countdown }}</div>
           <div style="font-size:clamp(15px,1.25vw,21px);color:#F9F3EA">Thursday, 8 October 2026 &middot; Hotel Grand Guardian, Ratnapura</div>
-          <div style="margin-top:clamp(2px,.5vh,8px);font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:clamp(10px,.76vw,12px);letter-spacing:.24em;text-transform:uppercase;color:#E4D2B4;line-height:1.9">Poruwa Ceremony 9:35 am&nbsp;&middot; Grand Ball Room</div>
+          <div style="margin-top:clamp(2px,.5vh,8px);font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:clamp(10px,.76vw,12px);letter-spacing:.24em;text-transform:uppercase;color:#E4D2B4;line-height:1.9">Poruwa Ceremony 9:35 am&nbsp;&middot;</div>
         </div>
 
         <div style="margin-top:clamp(14px,2.4vh,30px);display:flex;flex-direction:row;flex-wrap:wrap;justify-content:center;align-items:center;gap:clamp(10px,1.4vw,18px);animation:riseIn 1600ms cubic-bezier(.2,.7,.2,1) 3400ms both">
-          <div onClick="{{ openRsvp }}" style="min-height:50px;display:flex;align-items:center;padding:0 clamp(32px,3.8vw,54px);border:1px solid rgba(214,188,138,.9);border-radius:8px;background:rgba(43,21,29,.32);cursor:pointer;font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:12px;letter-spacing:.42em;text-transform:uppercase;color:#F9F3EA;transition:background 300ms ease,transform 300ms ease,border-color 300ms ease" style-hover="background:rgba(214,188,138,.26);border-color:#E4D2B4;transform:translateY(-3px)">RSVP</div>
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSfN6jqlV14e51LrTPsg6qkQ8PbQZQ4mCfzBDl6RMsucRrDJUw/viewform" target="_blank" rel="noopener" style="min-height:50px;display:flex;align-items:center;padding:0 clamp(32px,3.8vw,54px);border:1px solid rgba(214,188,138,.9);border-radius:8px;background:rgba(43,21,29,.32);cursor:pointer;font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:12px;letter-spacing:.42em;text-transform:uppercase;color:#F9F3EA;text-decoration:none;transition:background 300ms ease,transform 300ms ease,border-color 300ms ease" style-hover="background:rgba(214,188,138,.26);border-color:#E4D2B4;transform:translateY(-3px)">RSVP</a>
           <div onClick="{{ openMap }}" style="min-height:44px;display:flex;align-items:center;padding:0 12px;border-radius:6px;background:transparent;border-bottom:1px solid rgba(214,188,138,.5);cursor:pointer;font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:#E4D2B4;transition:border-color 300ms ease,color 300ms ease" style-hover="border-color:#E4D2B4;color:#F9F3EA">View location</div>
         </div>
       </div>
@@ -198,32 +198,9 @@ a{color:#D6C09C;text-decoration:none}a:hover{color:#F7F1E8}
     </div>
   </sc-if>
 
-  <sc-if value="{{ rsvpOpen }}" hint-placeholder-val="{{ false }}">
-    <div style="position:absolute;inset:0;background:rgba(43,21,29,.86);backdrop-filter:blur(12px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(14px,2.4vh,26px);padding:8vh 6vw;animation:fadeIn 400ms ease both">
-      <sc-if value="{{ rsvpSent }}" hint-placeholder-val="{{ false }}">
-        <div style="text-align:center;animation:riseIn 1000ms ease both">
-          <div style="font-weight:300;font-style:italic;font-size:clamp(24px,2.6vw,40px);color:#F7F1E8">Thank you — we can't wait to see you.</div>
-          <div onClick="{{ closeRsvp }}" style="margin:clamp(22px,3.4vh,38px) auto 0;width:max-content;min-height:44px;display:flex;align-items:center;padding:0 24px;border:1px solid rgba(201,166,107,.6);border-radius:999px;cursor:pointer;font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:#F7F1E8">Close</div>
-        </div>
-      </sc-if>
-      <sc-if value="{{ rsvpForm }}" hint-placeholder-val="{{ true }}">
-        <div style="width:min(90vw,440px);text-align:center">
-          <div style="font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:10px;letter-spacing:.46em;text-transform:uppercase;color:#C9A66B">RSVP</div>
-          <div style="margin-top:14px;font-weight:300;font-size:clamp(24px,2.4vw,38px);color:#F7F1E8">We would be delighted to celebrate with you.</div>
-          <div style="margin-top:10px;font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:9px;letter-spacing:.36em;text-transform:uppercase;color:#C9A66B">Kindly reply by 25 September 2026</div>
-          <input value="{{ rsvpName }}" onChange="{{ onRsvpName }}" placeholder="Your name" style="margin-top:clamp(20px,3vh,32px);width:100%;min-height:48px;padding:0 16px;background:transparent;border:none;border-bottom:1px solid rgba(214,192,156,.5);outline:none;font-family:'Cormorant Garamond',Georgia,serif;font-size:19px;color:#F7F1E8;text-align:center">
-          <div style="margin-top:clamp(20px,3vh,32px);display:flex;justify-content:center;gap:12px">
-            <div onClick="{{ sendYes }}" style="min-height:48px;display:flex;align-items:center;padding:0 26px;border:1px solid rgba(201,166,107,.75);border-radius:8px;cursor:pointer;font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:#F7F1E8;transition:background 300ms ease" style-hover="background:rgba(201,166,107,.24)">Joyfully yes</div>
-            <div onClick="{{ sendNo }}" style="min-height:48px;display:flex;align-items:center;padding:0 26px;border-bottom:1px solid rgba(214,192,156,.4);cursor:pointer;font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:rgba(247,241,232,.8);transition:border-color 300ms ease" style-hover="border-color:rgba(214,192,156,.9)">With regret</div>
-          </div>
-          <div onClick="{{ closeRsvp }}" style="margin:clamp(22px,3.4vh,36px) auto 0;width:max-content;font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:9px;letter-spacing:.4em;text-transform:uppercase;color:rgba(247,241,232,.55);cursor:pointer">Close</div>
-        </div>
-      </sc-if>
-    </div>
-  </sc-if>
 
   <sc-if value="{{ mapOpen }}" hint-placeholder-val="{{ false }}">
-    <div style="position:absolute;inset:0;background:rgba(43,21,29,.82);backdrop-filter:blur(10px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:6vh 5vw;animation:fadeIn 400ms ease both">
+    <div style="position:absolute;inset:0;z-index:10;background:rgba(43,21,29,.82);backdrop-filter:blur(10px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:6vh 5vw;animation:fadeIn 400ms ease both">
       <div style="font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:10px;letter-spacing:.42em;text-transform:uppercase;color:#C8AA79">Hotel Grand Guardian, Ratnapura</div>
       <iframe title="Venue map" src="https://www.openstreetmap.org/export/embed.html?bbox=80.3694%2C6.7360%2C80.3894%2C6.7500&amp;layer=mapnik&amp;marker=6.7430006%2C80.3793568" style="width:min(90vw,900px);height:min(60vh,520px);border:1px solid rgba(214,192,156,.35);filter:saturate(.75) contrast(.95)"></iframe>
       <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:12px">
@@ -236,7 +213,11 @@ a{color:#D6C09C;text-decoration:none}a:hover{color:#F7F1E8}
   <sc-if value="{{ intro }}" hint-placeholder-val="{{ true }}">
     <div style="position:absolute;inset:0;background:#2B151D;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;animation:{{ aIntro }}">
       <div style="position:absolute;inset:0;background:radial-gradient(70% 60% at 50% 50%,rgba(200,170,121,.10),rgba(43,21,29,0) 70%)"></div>
-      <div style="font-weight:300;font-size:clamp(44px,6vw,96px);line-height:1;letter-spacing:.06em;color:#F7F1E8;animation:introIn 1100ms ease both">K &nbsp;+&nbsp; S</div>
+      <div style="display:flex;align-items:center;justify-content:center;gap:clamp(10px,1.8vw,24px);line-height:1;animation:introIn 1100ms ease both">
+        <span style="font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:500;font-size:clamp(60px,9vw,140px);color:#F7F1E8;text-shadow:0 1px 22px rgba(200,170,121,.35)">K</span>
+        <span style="font-size:clamp(24px,3.2vw,42px);color:#C8AA79;text-shadow:0 0 16px rgba(200,170,121,.6)">&#10084;</span>
+        <span style="font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:500;font-size:clamp(60px,9vw,140px);color:#F7F1E8;text-shadow:0 1px 22px rgba(200,170,121,.35)">S</span>
+      </div>
       <div style="font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:9px;letter-spacing:.5em;text-transform:uppercase;color:#C8AA79;animation:introIn 1100ms ease 250ms both">Our story begins</div>
     </div>
   </sc-if>
@@ -244,7 +225,7 @@ a{color:#D6C09C;text-decoration:none}a:hover{color:#F7F1E8}
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:&quot;100%&quot;}}">
 class Component extends DCLogic {
-  state = { phase: 'intro', muted: true, menu: false, portrait: false, vw: 1200, vh: 800, finalText: false, v3Center: false, intro: true, needsTap: false, zoom: false, step: -1, mapOpen: false, rsvpOpen: false, rsvpSent: false, rsvpName: '', countdown: '' };
+  state = { phase: 'intro', muted: true, menu: false, portrait: false, vw: 1200, vh: 800, finalText: false, v3Center: false, intro: true, needsTap: false, zoom: false, step: -1, mapOpen: false, countdown: '' };
 
   v1 = React.createRef();
   v2 = React.createRef();
@@ -274,8 +255,8 @@ class Component extends DCLogic {
 
     this.onAdvance = (e) => {
       this.resetIdle();
-      if (e.key === 'Escape') { this.setState({ menu: false, mapOpen: false, rsvpOpen: false }); return; }
-      if (this.state.menu || this.state.mapOpen || this.state.rsvpOpen) return;
+      if (e.key === 'Escape') { this.setState({ menu: false, mapOpen: false }); return; }
+      if (this.state.menu || this.state.mapOpen) return;
       if (this.lock && Date.now() < this.lock) return;
       const gesture = e.type === 'wheel' ? 'wheel' : (e.type === 'keydown' ? 'key' : 'touch');
       let dir = 1;
@@ -286,7 +267,7 @@ class Component extends DCLogic {
     this.onTouchStart = (e) => { this.resetIdle(); this.tY = e.touches && e.touches[0] ? e.touches[0].clientY : null; };
     this.onTouchEnd = (e) => {
       this.resetIdle();
-      if (this.state.menu || this.state.mapOpen || this.state.rsvpOpen) return;
+      if (this.state.menu || this.state.mapOpen) return;
       if (this.lock && Date.now() < this.lock) return;
       const y = e.changedTouches && e.changedTouches[0] ? e.changedTouches[0].clientY : null;
       const dy = (this.tY == null || y == null) ? 0 : this.tY - y;
@@ -315,7 +296,7 @@ class Component extends DCLogic {
   }
 
   autoAdvance() {
-    if (this.state.menu || this.state.mapOpen || this.state.rsvpOpen) { this.resetIdle(); return; }
+    if (this.state.menu || this.state.mapOpen) { this.resetIdle(); return; }
     if (this.lock && Date.now() < this.lock) { this.resetIdle(); return; }
     const ph = this.state.phase, st = this.state.step;
     // video1, invite (video1's text), and video2 up through the venue text (step <= 0)
@@ -409,13 +390,13 @@ class Component extends DCLogic {
       this.lock = Date.now() + 1400;
       this.venueAt = Date.now();
       clearTimeout(this.centerT); this.centerT = null;
-      this.armAdvance(7500);
+      this.armAdvance(20000);
       this.setState({ step: 0, finalText: false, v3Center: false });
     } else if (ph === 'video2' && st === 0) {
       const v2 = this.v2.current;
       if (v2) { v2.pause(); try { v2.currentTime = 0; } catch (e) {} }
       this.lock = Date.now() + 1600;
-      this.armAdvance(7500);
+      this.armAdvance(20000);
       this.setState({ phase: 'invite', step: -1, zoom: true, finalText: false });
     } else if (ph === 'invite') {
       clearTimeout(this.tAutoAdv);
@@ -430,7 +411,7 @@ class Component extends DCLogic {
     const v = this.v1.current;
     try { if (v && v.duration) v.currentTime = Math.max(0, v.duration - 0.05); } catch (e) {}
     if (v) v.pause();
-    this.armAdvance(7500);
+    this.armAdvance(20000);
     this.setState({ phase: 'invite', intro: false, zoom: true });
   }
 
@@ -477,25 +458,16 @@ class Component extends DCLogic {
       mapOpen: this.state.mapOpen,
       openMap: () => this.setState({ mapOpen: true }),
       closeMap: () => this.setState({ mapOpen: false }),
-      onV2End: () => { const v = this.v2.current; if (v) v.pause(); if (st < 0) { this.venueAt = Date.now(); this.armAdvance(5000); this.setState({ step: 0, needsTap: false }); } },
+      onV2End: () => { const v = this.v2.current; if (v) v.pause(); if (st < 0) { this.venueAt = Date.now(); this.armAdvance(20000); this.setState({ step: 0, needsTap: false }); } },
       onV2Time: (e) => {
         const v = e.currentTarget;
-        if (st < 0 && v.duration && v.duration - v.currentTime < 3.4) { this.venueAt = Date.now(); this.armAdvance(5000); this.setState({ step: 0, needsTap: false }); }
+        if (st < 0 && v.duration && v.duration - v.currentTime < 3.4) { this.venueAt = Date.now(); this.armAdvance(20000); this.setState({ step: 0, needsTap: false }); }
       },
       mountPanel: st >= 0,
       atVenue: st === 0,
       atFinal: st === 1,
       countdown: this.state.countdown,
 
-      rsvpOpen: this.state.rsvpOpen,
-      rsvpSent: this.state.rsvpSent,
-      rsvpForm: !this.state.rsvpSent,
-      rsvpName: this.state.rsvpName,
-      onRsvpName: (e) => this.setState({ rsvpName: e.target.value }),
-      openRsvp: () => this.setState({ rsvpOpen: true }),
-      closeRsvp: () => this.setState({ rsvpOpen: false }),
-      sendYes: () => this.setState({ rsvpSent: true }),
-      sendNo: () => this.setState({ rsvpSent: true }),
       aPanel: 'fadeIn 1200ms ease both',
       // The ivory plate holds through the scene 2 -> 3 crossfade, then clears.
       aScrim: st === 1 ? 'fadeOut 1800ms ease 3800ms both' : (st >= 0 ? 'fadeIn 2000ms ease both' : 'fadeOut 1ms linear both'),
@@ -525,7 +497,7 @@ class Component extends DCLogic {
       },
       mountText: shown || out,
       onV1End: () => {
-        this.armAdvance(5000);
+        this.armAdvance(20000);
         this.setState({ phase: 'invite', intro: false, zoom: true });
       },
       fit: 'cover',
@@ -566,8 +538,8 @@ class Component extends DCLogic {
       panelBottom: this.state.portrait ? '18px' : 'clamp(86px,12vh,132px)',
       panelRef: this.panelRef,
       hintLabel: this.state.portrait ? 'Swipe to continue' : 'Scroll to continue',
-      soundGlyph: this.state.muted ? '♪' : '♫',
-      soundLabel: this.state.muted ? 'Play music' : 'Mute',
+      soundGlyph: this.state.muted ? '🔇' : '🔊',
+      soundLabel: this.state.muted ? 'Unmute' : 'Mute',
       aIntro: this.state.phase === 'intro' ? 'none' : 'introOut 1300ms ease both',
       aEyebrow: inv(0, 'fadeOut', 0),
       aNames: inv(900, 'fadeOut', 900),
