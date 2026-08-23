@@ -110,10 +110,10 @@ a{color:#D6C09C;text-decoration:none}a:hover{color:#F7F1E8}
   <sc-if value="{{ menu }}" hint-placeholder-val="{{ false }}">
     <div onClick="{{ closeMenu }}" style="position:absolute;inset:0;z-index:10;background:rgba(43,21,29,.9);backdrop-filter:blur(14px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(16px,3vh,30px);animation:fadeIn 500ms ease both;cursor:pointer">
       <div style="font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:9px;letter-spacing:.44em;text-transform:uppercase;color:#B99A68;margin-bottom:clamp(8px,2vh,18px)">K &nbsp;+&nbsp; S</div>
-      <div style="font-weight:300;font-size:clamp(28px,3.4vw,48px);line-height:1.1;color:#F7F1E8;animation:riseIn 700ms ease 60ms both">Invitation</div>
-      <div style="font-weight:300;font-size:clamp(28px,3.4vw,48px);line-height:1.1;color:#F7F1E8;animation:riseIn 700ms ease 140ms both">Poruwa Ceremony</div>
-      <div style="font-weight:300;font-size:clamp(28px,3.4vw,48px);line-height:1.1;color:#F7F1E8;animation:riseIn 700ms ease 220ms both">Venue</div>
-      <div style="font-weight:300;font-size:clamp(28px,3.4vw,48px);line-height:1.1;color:#F7F1E8;animation:riseIn 700ms ease 300ms both">RSVP</div>
+      <div onClick="{{ goStart }}" style="font-weight:300;font-size:clamp(28px,3.4vw,48px);line-height:1.1;color:#F7F1E8;cursor:pointer;transition:color 300ms ease;animation:riseIn 700ms ease 60ms both" style-hover="color:#D6BC8A">Invitation</div>
+      <div onClick="{{ goLocation }}" style="font-weight:300;font-size:clamp(28px,3.4vw,48px);line-height:1.1;color:#F7F1E8;cursor:pointer;transition:color 300ms ease;animation:riseIn 700ms ease 140ms both" style-hover="color:#D6BC8A">Venue</div>
+      <!-- <div onClick="{{ goEnd }}" style="font-weight:300;font-size:clamp(28px,3.4vw,48px);line-height:1.1;color:#F7F1E8;cursor:pointer;transition:color 300ms ease;animation:riseIn 700ms ease 220ms both" style-hover="color:#D6BC8A">Poruwa Ceremony</div> -->
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSfN6jqlV14e51LrTPsg6qkQ8PbQZQ4mCfzBDl6RMsucRrDJUw/viewform" target="_blank" rel="noopener" style="font-weight:300;font-size:clamp(28px,3.4vw,48px);line-height:1.1;color:#F7F1E8;text-decoration:none;cursor:pointer;transition:color 300ms ease;animation:riseIn 700ms ease 300ms both" style-hover="color:#D6BC8A">RSVP</a>
       <div style="margin-top:clamp(18px,4vh,40px);font-family:'Jost',system-ui,sans-serif;font-weight:300;font-size:8px;letter-spacing:.4em;text-transform:uppercase;color:rgba(247,241,232,.5)">Tap anywhere to close</div>
     </div>
   </sc-if>
@@ -415,6 +415,32 @@ class Component extends DCLogic {
     this.setState({ phase: 'invite', intro: false, zoom: true });
   }
 
+  // Menu-driven direct navigation to a named section, bypassing the normal
+  // step-by-step forward()/back() flow so the menu can jump anywhere at once.
+  goTo(target) {
+    clearTimeout(this.tAutoAdv);
+    clearTimeout(this.t3);
+    clearTimeout(this.centerT); this.centerT = null;
+    const v1 = this.v1.current, v2 = this.v2.current, v3 = this.v3.current;
+    if (v3) { v3.pause(); try { v3.currentTime = 0; } catch (e) {} }
+    this.lock = Date.now() + 1200;
+
+    if (target === 'start') {
+      if (v2) { v2.pause(); try { v2.currentTime = 0; } catch (e) {} }
+      if (v1) { try { if (v1.duration) v1.currentTime = Math.max(0, v1.duration - 0.05); } catch (e) {} v1.pause(); }
+      this.armAdvance(20000);
+      this.setState({ menu: false, phase: 'invite', step: -1, intro: false, zoom: true, finalText: false, needsTap: false, v3Center: false });
+    } else if (target === 'location') {
+      if (v2) { try { if (v2.duration) v2.currentTime = Math.max(0, v2.duration - 0.05); } catch (e) {} v2.pause(); }
+      this.venueAt = Date.now();
+      this.armAdvance(20000);
+      this.setState({ menu: false, phase: 'video2', step: 0, intro: false, zoom: true, finalText: false, needsTap: false, v3Center: false });
+    } else if (target === 'end') {
+      if (v2) { try { if (v2.duration) v2.currentTime = Math.max(0, v2.duration - 0.05); } catch (e) {} v2.pause(); }
+      this.setState({ menu: false, phase: 'video2', step: 1, intro: false, zoom: true, needsTap: false });
+    }
+  }
+
   advance() {
     clearTimeout(this.tAutoAdv);
     // Unlock video 2 inside the gesture's user-activation window, then park it at frame 0.
@@ -564,7 +590,10 @@ class Component extends DCLogic {
         }
       },
       openMenu: () => this.setState({ menu: true }),
-      closeMenu: () => this.setState({ menu: false })
+      closeMenu: () => this.setState({ menu: false }),
+      goStart: () => this.goTo('start'),
+      goLocation: () => this.goTo('location'),
+      goEnd: () => this.goTo('end')
     };
   }
 }
